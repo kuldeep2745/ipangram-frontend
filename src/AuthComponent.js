@@ -3,6 +3,7 @@ import Signup from "./components/auth/Signup";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import Cookies from "universal-cookie";
+// import { Redirect } from "react-router-dom"; // Import Redirect
 const cookies = new Cookies();
 
 // get token generated on login
@@ -10,7 +11,8 @@ const token = cookies.get("TOKEN");
 
 export default function AuthComponent() {
   const [message, setMessage] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);  // Add this line to store user role
+  const [isAdmin, setIsAdmin] = useState(false);
+  // const [redirectToAdmin, setRedirectToAdmin] = useState(false); // New state for redirection
 
   useEffect(() => {
     const configuration = {
@@ -23,8 +25,13 @@ export default function AuthComponent() {
 
     axios(configuration)
       .then((result) => {
+        console.log("result.data.isAdmin", result.data.isAdmin)
         setMessage(result.data.message);
-        setIsAdmin(result.data.isAdmin);  // Set user role
+        setIsAdmin(result.data.isAdmin);
+        // Redirect logic
+        // if (result.data.isAdmin) {
+        //   setRedirectToAdmin(true);
+        // }
       })
       .catch((error) => {
         error = new Error();
@@ -36,6 +43,11 @@ export default function AuthComponent() {
     window.location.href = "/";
   }
 
+  // Redirect if isAdmin is true
+  // if (redirectToAdmin) {
+  //   return <Redirect to="/admin-dashboard" />;
+  // }
+
   return (
     <div className="text-center">
       <h1>Auth Component</h1>
@@ -45,8 +57,11 @@ export default function AuthComponent() {
 
       {/* Displaying different content based on user role */}
       {isAdmin ? (
+        <div>
         <h3 className="text-success">Admin Dashboard Content</h3>
-      ) : (
+        <Signup />
+        </div>
+        ) : (
         <h3 className="text-success">User Dashboard Content</h3>
       )}
 
