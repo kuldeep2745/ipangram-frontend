@@ -1,7 +1,7 @@
 import { Switch, Route, Link } from "react-router-dom";
 import { Container, Col, Row } from "react-bootstrap";
 import Account from "./Account";
-import ManagerComponent from "./ManagerComponent";
+import ManagerComponent from "./components/auth/ManagerLogin";
 import AuthComponent from "./AuthComponent";
 import ProtectedRoutes from "./ProtectedRoutes";
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-export default function ManagerComponent() {
+export default function ManagerLogin() {
   // initial state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,7 +44,7 @@ export default function ManagerComponent() {
 
   return (
     <>
-      <h2>User Manager Login</h2>
+      <h2>Manager Login</h2>
       <Form onSubmit={(e) => handleSubmit(e)}>
         {/* email */}
         <Form.Group controlId="formBasicEmail">

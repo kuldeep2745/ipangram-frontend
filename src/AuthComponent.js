@@ -3,6 +3,9 @@ import Signup from "./components/auth/Signup";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import UserDetails from "./components/users/UserDetails"
+import UserList from "./components/users/UsersList"
+import {MyContext} from "./MyContext"
 // import { Redirect } from "react-router-dom"; // Import Redirect
 const cookies = new Cookies();
 
@@ -12,6 +15,8 @@ const token = cookies.get("TOKEN");
 export default function AuthComponent() {
   const [message, setMessage] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userList, setUserList] = useState([]);
+  const [userDetails, setUserDetails] = useState([]);
   // const [redirectToAdmin, setRedirectToAdmin] = useState(false); // New state for redirection
 
   useEffect(() => {
@@ -60,9 +65,17 @@ export default function AuthComponent() {
         <div>
         <h3 className="text-success">Admin Dashboard Content</h3>
         <Signup />
+        <MyContext.Provider value={{ userList, setUserList, token }}>
+        <UserList />
+      </MyContext.Provider>
         </div>
         ) : (
+          <div>
         <h3 className="text-success">User Dashboard Content</h3>
+        <MyContext.Provider value={{ userDetails, setUserDetails, token }}>
+        <UserDetails />
+      </MyContext.Provider>
+          </div>
       )}
 
       <h3 className="text-danger">{message}</h3>
