@@ -6,11 +6,27 @@ export default function Signup() {
   // initial state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [location, setLocation] = useState("");
+  const [fullName, setFullName] = useState("");
   const [register, setRegister] = useState(false);
+  const [validationError, setValidationError] = useState(null);
 
   const handleSubmit = (e) => {
     // prevent the form from refreshing the whole page
     e.preventDefault();
+
+    // Basic form validation
+    if (!email || !password || !location || !fullName) {
+      setValidationError("All fields are required.");
+      return;
+    }
+
+    // Check email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setValidationError("Invalid email format.");
+      return;
+    }
 
     // set configurations
     const configuration = {
@@ -19,6 +35,8 @@ export default function Signup() {
       data: {
         email,
         password,
+        location,
+        fullName,
       },
     };
 
@@ -26,9 +44,14 @@ export default function Signup() {
     axios(configuration)
       .then((result) => {
         setRegister(true);
+        // Clear input fields after successful signup
+        setEmail("");
+        setPassword("");
+        setLocation("");
+        setFullName("");
       })
       .catch((error) => {
-        error = new Error();
+        setValidationError("Registration failed. Please try again.");
       });
   };
 
@@ -60,6 +83,30 @@ export default function Signup() {
           />
         </Form.Group>
 
+        {/* location */}
+        <Form.Group controlId="formBasicLocation">
+          <Form.Label>Location</Form.Label>
+          <Form.Control
+            type="text"
+            name="location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Enter location"
+          />
+        </Form.Group>
+
+        {/* fullName */}
+        <Form.Group controlId="formBasicFullName">
+          <Form.Label>Full Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="fullName"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="Enter full name"
+          />
+        </Form.Group>
+
         {/* submit button */}
         <Button
           variant="primary"
@@ -69,11 +116,11 @@ export default function Signup() {
           Sign Up
         </Button>
 
-        {/* display success message */}
+        {/* display success message or validation error */}
         {register ? (
           <p className="text-success">You Are Registered Successfully</p>
         ) : (
-          <p className="text-danger">You Are Not Registered</p>
+          validationError && <p className="text-danger">{validationError}</p>
         )}
       </Form>
     </>
