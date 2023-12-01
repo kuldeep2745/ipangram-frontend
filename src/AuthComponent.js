@@ -9,12 +9,10 @@ const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
 export default function AuthComponent() {
-  // set an initial state for the message we will receive after the API call
   const [message, setMessage] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);  // Add this line to store user role
 
-  // useEffect automatically executes once the page is fully loaded
   useEffect(() => {
-    // set configurations for the API call here
     const configuration = {
       method: "get",
       url: "http://localhost:3000/auth-endpoint",
@@ -23,35 +21,35 @@ export default function AuthComponent() {
       },
     };
 
-    // make the API call
     axios(configuration)
       .then((result) => {
-        // assign the message in our result to the message we initialized above
         setMessage(result.data.message);
+        setIsAdmin(result.data.isAdmin);  // Set user role
       })
       .catch((error) => {
         error = new Error();
       });
   }, []);
 
-  // logout
   const logout = () => {
-    // destroy the cookie
     cookies.remove("TOKEN", { path: "/" });
-    // redirect user to the landing page
     window.location.href = "/";
   }
 
   return (
     <div className="text-center">
       <h1>Auth Component</h1>
-      {/* logout */}
       <Button type="submit" variant="danger" onClick={() => logout()}>
         Logout
       </Button>
 
-      {/* displaying our message from our API call */}
-      <Signup />
+      {/* Displaying different content based on user role */}
+      {isAdmin ? (
+        <h3 className="text-success">Admin Dashboard Content</h3>
+      ) : (
+        <h3 className="text-success">User Dashboard Content</h3>
+      )}
+
       <h3 className="text-danger">{message}</h3>
     </div>
   );

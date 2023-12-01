@@ -12,10 +12,8 @@ export default function ManagerComponent() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = (e) => {
-    // prevent the form from refreshing the whole page
     e.preventDefault();
-
-    // set configurations
+  
     const configuration = {
       method: "post",
       url: "http://localhost:3000/admin-login-dummy",
@@ -24,22 +22,22 @@ export default function ManagerComponent() {
         password,
       },
     };
-
-    // make the API call
+  
     axios(configuration)
       .then((result) => {
         // set the cookie
         cookies.set("TOKEN", result.data.token, {
           path: "/",
         });
-        // redirect user to the auth page
-        window.location.href = "/auth";
-
+  
         setLogin(true);
+  
+        // Redirect to the admin dashboard
+        window.location.href = "/auth";
       })
       .catch((error) => {
-        setErrorMessage(error)
-        console.log("myerror", error)
+        setErrorMessage(error);
+        console.log("myerror", error);
         error = new Error();
       });
   };
