@@ -34,6 +34,7 @@ const UserDetails = () => {
       <th scope="col">User Name</th>
       <th scope="col">User Location</th>
       <th scope="col">User Email</th>
+      <th scope="col">User Department</th>
     </tr>
   </thead>
             <tbody>
@@ -43,6 +44,7 @@ const UserDetails = () => {
       <td>{item?.fullName}</td>
       <td>{item?.location}</td>
       <td>{item?.email}</td>
+      <td>{item?.department}</td>
     </tr>
 ))}
   </tbody>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { MyContext } from '../../MyContext';
 
 export default function Signup() {
-  const { userDetails, setUserDetails, setShowSignupModal, setSuccessMessage, token } = useContext(MyContext);
+  const { userDetails, setUserDetails, departmentList, setShowSignupModal, setSuccessMessage, token } = useContext(MyContext);
 
   // initial state
   const [email, setEmail] = useState("");
@@ -99,14 +99,14 @@ export default function Signup() {
         {/* department */}
         <Form.Group controlId="formBasicDepartment">
           <Form.Label>Department</Form.Label>
-          <Form.Control
-            type="text"
-            name="department"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            placeholder="Enter department"
-          />
-        </Form.Group>
+          <select onChange={(e) => setDepartment(e.target.value)} class="form-select" aria-label="Default select example">
+          <option selected>Open this select menu</option>
+            {departmentList?.map((item, index)=>(
+              <option key={index} value={item?.name}>{item?.name}</option>
+
+))}
+</select>
+        </Form.Group> 
 
         {/* email */}
         <Form.Group controlId="formBasicEmail">

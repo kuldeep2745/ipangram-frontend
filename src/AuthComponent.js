@@ -6,6 +6,7 @@ import Signup from "./components/auth/Signup";
 import UserDetails from "./components/users/UserDetails";
 import UserList from "./components/users/UsersList";
 import { MyContext } from "./MyContext";
+import DepartmentComponent from "./components/departments/DepartmentComponent"
 
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
@@ -17,6 +18,7 @@ export default function AuthComponent() {
   const [userDetails, setUserDetails] = useState([]);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [departmentList, setDepartmentList] = useState([]);
 
   useEffect(() => {
     const configuration = {
@@ -66,14 +68,19 @@ export default function AuthComponent() {
             Create New User
           </Button>
 
-          <MyContext.Provider value={{ userList, setUserList, token }}>
+          {/* Display the DepartmentComponent */}
+          <MyContext.Provider value={{ departmentList, setDepartmentList, token }}>
+          <DepartmentComponent />
+          </MyContext.Provider>
+
+          <MyContext.Provider value={{ userList, departmentList, setUserList, token }}>
             <UserList />
           </MyContext.Provider>
         </div>
       ) : (
         <div>
           <h3 className="text-success">User Dashboard Content</h3>
-          <MyContext.Provider value={{ userDetails, setUserDetails, token }}>
+          <MyContext.Provider value={{ userDetails, departmentList, setUserDetails, token }}>
             <UserDetails />
           </MyContext.Provider>
         </div>
@@ -87,7 +94,7 @@ export default function AuthComponent() {
           <Modal.Title>Create New User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <MyContext.Provider value={{ userList, setUserList, setShowSignupModal, setSuccessMessage, token }}>
+          <MyContext.Provider value={{ userList, departmentList, setUserList, setShowSignupModal, setSuccessMessage, token }}>
             <Signup />
           </MyContext.Provider>
         </Modal.Body>

@@ -4,7 +4,8 @@ import axios from 'axios';
 import { Button, Alert, Modal, Form } from 'react-bootstrap';
 
 const UsersList = () => {
-  const { userList, setUserList, token } = useContext(MyContext);
+  const { userList, departmentList, setUserList, token } = useContext(MyContext);
+
   const [successMessage, setSuccessMessage] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedUser, setEditedUser] = useState({});
@@ -216,13 +217,14 @@ const UsersList = () => {
 
             <Form.Group controlId="formDepartment">
               <Form.Label>Department</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter department"
-                value={editFormData.department}
-                onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value })}
-                isInvalid={!!validationErrors.department}
-              />
+              {/* department */}
+          <select onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value
+          })} class="form-select" aria-label="Default select example" isInvalid={!!validationErrors.department}>
+          <option selected>Open this select menu</option>
+            {departmentList?.map((item, index)=>(
+              <option key={index} value={item?.name}>{item?.name}</option>
+              ))}
+              </select>
               <Form.Control.Feedback type="invalid">{validationErrors.department}</Form.Control.Feedback>
             </Form.Group>
           </Form>
