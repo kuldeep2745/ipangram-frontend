@@ -11,6 +11,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [location, setLocation] = useState("");
   const [fullName, setFullName] = useState("");
+  const [department, setDepartment] = useState(""); // Add department state
   const [register, setRegister] = useState(false);
   const [validationError, setValidationError] = useState(null);
 
@@ -19,7 +20,7 @@ export default function Signup() {
     e.preventDefault();
 
     // Basic form validation
-    if (!email || !password || !location || !fullName) {
+    if (!email || !password || !location || !fullName || !department) {
       setValidationError("All fields are required.");
       return;
     }
@@ -40,6 +41,7 @@ export default function Signup() {
         password,
         location,
         fullName,
+        department, // Include department in the data sent to the server
       },
     };
 
@@ -53,12 +55,13 @@ export default function Signup() {
         setPassword("");
         setLocation("");
         setFullName("");
+        setDepartment(""); // Clear department field
         console.log("resultconsole", result);
-          setSuccessMessage(`User ${result?.data?.result?.fullName} created successfully`);
+        setSuccessMessage(`User ${result?.data?.result?.fullName} created successfully`);
   
-          setTimeout(() => {
-            setSuccessMessage(null);
-          }, 5000);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
       })
       .catch((error) => {
         setValidationError("Registration failed. Please try again.");
@@ -69,7 +72,6 @@ export default function Signup() {
     <>
       <h2>Create User</h2>
       <Form onSubmit={(e) => handleSubmit(e)}>
-
         {/* fullName */}
         <Form.Group controlId="formBasicFullName">
           <Form.Label>Full Name</Form.Label>
@@ -91,6 +93,18 @@ export default function Signup() {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Enter location"
+          />
+        </Form.Group>
+
+        {/* department */}
+        <Form.Group controlId="formBasicDepartment">
+          <Form.Label>Department</Form.Label>
+          <Form.Control
+            type="text"
+            name="department"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            placeholder="Enter department"
           />
         </Form.Group>
 
@@ -117,7 +131,6 @@ export default function Signup() {
             placeholder="Password"
           />
         </Form.Group>
-
 
         {/* submit button */}
         <Button

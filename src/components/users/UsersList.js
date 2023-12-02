@@ -12,11 +12,13 @@ const UsersList = () => {
     fullName: '',
     email: '',
     location: '',
+    department: '',
   });
   const [validationErrors, setValidationErrors] = useState({
     fullName: '',
     email: '',
     location: '',
+    department: '',
   });
 
   useEffect(() => {
@@ -63,6 +65,7 @@ const UsersList = () => {
       fullName: user.fullName,
       email: user.email,
       location: user.location,
+      department: user.department,
     });
     setShowEditModal(true);
   };
@@ -83,6 +86,10 @@ const UsersList = () => {
       errors.location = 'Location is required';
     }
 
+    if (!editFormData.department.trim()) {
+      errors.department = 'Department is required';
+    }
+
     setValidationErrors(errors);
 
     return Object.values(errors).every((error) => error === '');
@@ -99,6 +106,7 @@ const UsersList = () => {
       fullName: editFormData.fullName,
       email: editFormData.email,
       location: editFormData.location,
+      department: editFormData.department,
     };
 
     axios
@@ -140,6 +148,7 @@ const UsersList = () => {
             <th scope="col">User Name</th>
             <th scope="col">User Location</th>
             <th scope="col">User Email</th>
+            <th scope="col">User Department</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -150,6 +159,7 @@ const UsersList = () => {
               <td>{item.fullName}</td>
               <td>{item.location}</td>
               <td>{item.email}</td>
+              <td>{item.department}</td>
               <td>
                 <Button variant="danger" onClick={() => handleDelete(item?._id, item?.fullName)}>
                   Delete
@@ -202,6 +212,18 @@ const UsersList = () => {
                 isInvalid={!!validationErrors.location}
               />
               <Form.Control.Feedback type="invalid">{validationErrors.location}</Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group controlId="formDepartment">
+              <Form.Label>Department</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter department"
+                value={editFormData.department}
+                onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value })}
+                isInvalid={!!validationErrors.department}
+              />
+              <Form.Control.Feedback type="invalid">{validationErrors.department}</Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
