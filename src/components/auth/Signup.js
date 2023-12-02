@@ -59,6 +59,31 @@ export default function Signup() {
     <>
       <h2>Create User</h2>
       <Form onSubmit={(e) => handleSubmit(e)}>
+
+        {/* fullName */}
+        <Form.Group controlId="formBasicFullName">
+          <Form.Label>Full Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="fullName"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="Enter full name"
+          />
+        </Form.Group>
+
+        {/* location */}
+        <Form.Group controlId="formBasicLocation">
+          <Form.Label>Location</Form.Label>
+          <Form.Control
+            type="text"
+            name="location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Enter location"
+          />
+        </Form.Group>
+
         {/* email */}
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -83,29 +108,6 @@ export default function Signup() {
           />
         </Form.Group>
 
-        {/* location */}
-        <Form.Group controlId="formBasicLocation">
-          <Form.Label>Location</Form.Label>
-          <Form.Control
-            type="text"
-            name="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Enter location"
-          />
-        </Form.Group>
-
-        {/* fullName */}
-        <Form.Group controlId="formBasicFullName">
-          <Form.Label>Full Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="fullName"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            placeholder="Enter full name"
-          />
-        </Form.Group>
 
         {/* submit button */}
         <Button
