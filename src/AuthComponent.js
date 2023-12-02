@@ -54,7 +54,6 @@ export default function AuthComponent() {
 
   return (
     <div className="text-center">
-      <h1>Auth Component</h1>
       <Button type="submit" variant="danger" onClick={() => logout()}>
         Logout
       </Button>
@@ -62,7 +61,6 @@ export default function AuthComponent() {
       {/* Displaying different content based on user role */}
       {isAdmin ? (
         <div>
-          <h3 className="text-success">Admin Dashboard Content</h3>
           {successMessage && <Alert variant="success">{successMessage}</Alert>}
           <Button variant="primary" onClick={handleCreateUser}>
             Create New User
@@ -79,7 +77,6 @@ export default function AuthComponent() {
         </div>
       ) : (
         <div>
-          <h3 className="text-success">User Dashboard Content</h3>
           <MyContext.Provider value={{ userDetails, departmentList, setUserDetails, token }}>
             <UserDetails />
           </MyContext.Provider>

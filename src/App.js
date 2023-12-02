@@ -10,8 +10,6 @@ function App() {
     <Container>
       <Row>
         <Col className="text-center">
-          <h1>I-pangram App</h1>
-
           <section id="navigation">
   <Link to="/">User Login</Link>
   <Link to="/manager">Manager Login</Link>
