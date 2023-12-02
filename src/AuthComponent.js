@@ -6,7 +6,8 @@ import Signup from "./components/auth/Signup";
 import UserDetails from "./components/users/UserDetails";
 import UserList from "./components/users/UsersList";
 import { MyContext } from "./MyContext";
-import DepartmentComponent from "./components/departments/DepartmentComponent"
+import DepartmentComponent from "./components/departments/DepartmentComponent";
+import Header from "./components/header/Header";
 
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
@@ -61,16 +62,16 @@ export default function AuthComponent() {
       {/* Displaying different content based on user role */}
       {isAdmin ? (
         <div>
-          {successMessage && <Alert variant="success">{successMessage}</Alert>}
-          <Button variant="primary" onClick={handleCreateUser}>
-            Create New User
-          </Button>
 
           {/* Display the DepartmentComponent */}
           <MyContext.Provider value={{ departmentList, setDepartmentList, token }}>
           <DepartmentComponent />
           </MyContext.Provider>
 
+          {successMessage && <Alert variant="success">{successMessage}</Alert>}
+          <Button variant="primary" onClick={handleCreateUser}>
+            Create New User
+          </Button>
           <MyContext.Provider value={{ userList, departmentList, setUserList, token }}>
             <UserList />
           </MyContext.Provider>
