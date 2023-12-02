@@ -11,7 +11,11 @@ const UsersList = () => {
   const [editFormData, setEditFormData] = useState({
     fullName: '',
     email: '',
-    password: '',
+    location: '',
+  });
+  const [validationErrors, setValidationErrors] = useState({
+    fullName: '',
+    email: '',
     location: '',
   });
 
@@ -26,7 +30,7 @@ const UsersList = () => {
 
     axios(authConfig)
       .then((result) => {
-        setUserList(result?.data); // Wrap the result in an array
+        setUserList(result?.data);
       })
       .catch((error) => {
         console.error('Error fetching user:', error);
@@ -34,7 +38,6 @@ const UsersList = () => {
   }, [setUserList, token]);
 
   const handleDelete = (userId, userName) => {
-    // Delete user by ID
     axios
       .delete(`http://localhost:3000/users/${userId}`, {
         headers: {
@@ -42,11 +45,9 @@ const UsersList = () => {
         },
       })
       .then((response) => {
-        // Remove deleted user from the user list
         setUserList((prevUsers) => prevUsers.filter((user) => user._id !== userId));
         setSuccessMessage(`${userName} deleted successfully`);
 
-        // Clear the success message after 3 seconds
         setTimeout(() => {
           setSuccessMessage(null);
         }, 3000);
@@ -61,23 +62,49 @@ const UsersList = () => {
     setEditFormData({
       fullName: user.fullName,
       email: user.email,
-      password: '', // Initially empty, as we don't want to display the existing password
       location: user.location,
     });
     setShowEditModal(true);
   };
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!editFormData.fullName.trim()) {
+      errors.fullName = 'Full Name is required';
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!editFormData.email.trim() || !emailPattern.test(editFormData.email)) {
+      errors.email = 'Valid Email is required';
+    }
+
+    if (!editFormData.location.trim()) {
+      errors.location = 'Location is required';
+    }
+
+    setValidationErrors(errors);
+
+    return Object.values(errors).every((error) => error === '');
+  };
+
   const handleEditSubmit = () => {
+    if (!validateForm()) {
+      return;
+    }
+
     const { _id } = editedUser;
+
+    const updatedUserData = {
+      fullName: editFormData.fullName,
+      email: editFormData.email,
+      location: editFormData.location,
+    };
+
     axios
       .put(
         `http://localhost:3000/users/${_id}`,
-        {
-          fullName: editFormData.fullName,
-          email: editFormData.email,
-          password: editFormData.password,
-          location: editFormData.location,
-        },
+        updatedUserData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,19 +112,16 @@ const UsersList = () => {
         }
       )
       .then((response) => {
-        // Update the user list with the edited user
         setUserList((prevUsers) =>
           prevUsers.map((user) => (user._id === _id ? { ...user, ...response.data } : user))
         );
 
         setSuccessMessage(`${editFormData.fullName} updated successfully`);
 
-        // Clear the success message after 3 seconds
         setTimeout(() => {
           setSuccessMessage(null);
         }, 3000);
 
-        // Close the modal after successful edit
         setShowEditModal(false);
       })
       .catch((error) => {
@@ -153,7 +177,9 @@ const UsersList = () => {
                 placeholder="Enter full name"
                 value={editFormData.fullName}
                 onChange={(e) => setEditFormData({ ...editFormData, fullName: e.target.value })}
+                isInvalid={!!validationErrors.fullName}
               />
+              <Form.Control.Feedback type="invalid">{validationErrors.fullName}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formEmail">
               <Form.Label>Email</Form.Label>
@@ -162,16 +188,9 @@ const UsersList = () => {
                 placeholder="Enter email"
                 value={editFormData.email}
                 onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                isInvalid={!!validationErrors.email}
               />
-            </Form.Group>
-            <Form.Group controlId="formPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter password (optional)"
-                value={editFormData.password}
-                onChange={(e) => setEditFormData({ ...editFormData, password: e.target.value })}
-              />
+              <Form.Control.Feedback type="invalid">{validationErrors.email}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formLocation">
               <Form.Label>Location</Form.Label>
@@ -180,7 +199,9 @@ const UsersList = () => {
                 placeholder="Enter location"
                 value={editFormData.location}
                 onChange={(e) => setEditFormData({ ...editFormData, location: e.target.value })}
+                isInvalid={!!validationErrors.location}
               />
+              <Form.Control.Feedback type="invalid">{validationErrors.location}</Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
