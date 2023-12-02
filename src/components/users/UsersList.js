@@ -1,16 +1,24 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { MyContext } from '../../MyContext';
-import axios from "axios";
-import { Button, Alert } from "react-bootstrap";
+import axios from 'axios';
+import { Button, Alert, Modal, Form } from 'react-bootstrap';
 
 const UsersList = () => {
   const { userList, setUserList, token } = useContext(MyContext);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editedUser, setEditedUser] = useState({});
+  const [editFormData, setEditFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    location: '',
+  });
 
   useEffect(() => {
     const authConfig = {
-      method: "get",
-      url: "http://localhost:3000/users",
+      method: 'get',
+      url: 'http://localhost:3000/users',
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -21,7 +29,7 @@ const UsersList = () => {
         setUserList(result?.data); // Wrap the result in an array
       })
       .catch((error) => {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
       });
   }, [setUserList, token]);
 
@@ -44,7 +52,56 @@ const UsersList = () => {
         }, 3000);
       })
       .catch((error) => {
-        console.error("Error deleting user:", error);
+        console.error('Error deleting user:', error);
+      });
+  };
+
+  const handleEdit = (user) => {
+    setEditedUser(user);
+    setEditFormData({
+      fullName: user.fullName,
+      email: user.email,
+      password: '', // Initially empty, as we don't want to display the existing password
+      location: user.location,
+    });
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = () => {
+    const { _id } = editedUser;
+    axios
+      .put(
+        `http://localhost:3000/users/${_id}`,
+        {
+          fullName: editFormData.fullName,
+          email: editFormData.email,
+          password: editFormData.password,
+          location: editFormData.location,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        // Update the user list with the edited user
+        setUserList((prevUsers) =>
+          prevUsers.map((user) => (user._id === _id ? { ...user, ...response.data } : user))
+        );
+
+        setSuccessMessage(`${editFormData.fullName} updated successfully`);
+
+        // Clear the success message after 3 seconds
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 3000);
+
+        // Close the modal after successful edit
+        setShowEditModal(false);
+      })
+      .catch((error) => {
+        console.error('Error editing user:', error);
       });
   };
 
@@ -59,7 +116,7 @@ const UsersList = () => {
             <th scope="col">User Name</th>
             <th scope="col">User Location</th>
             <th scope="col">User Email</th>
-            <th scope="col">Delete User</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -72,14 +129,72 @@ const UsersList = () => {
               <td>
                 <Button variant="danger" onClick={() => handleDelete(item?._id, item?.fullName)}>
                   Delete
+                </Button>{' '}
+                <Button variant="primary" onClick={() => handleEdit(item)}>
+                  Edit
                 </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Edit User Modal */}
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit User Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formFullName">
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter full name"
+                value={editFormData.fullName}
+                onChange={(e) => setEditFormData({ ...editFormData, fullName: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={editFormData.email}
+                onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Enter password (optional)"
+                value={editFormData.password}
+                onChange={(e) => setEditFormData({ ...editFormData, password: e.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formLocation">
+              <Form.Label>Location</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter location"
+                value={editFormData.location}
+                onChange={(e) => setEditFormData({ ...editFormData, location: e.target.value })}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleEditSubmit}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
-}
+};
 
 export default UsersList;
