@@ -50,7 +50,7 @@ const UsersList = () => {
 
         setTimeout(() => {
           setSuccessMessage(null);
-        }, 3000);
+        }, 5000);
       })
       .catch((error) => {
         console.error('Error deleting user:', error);

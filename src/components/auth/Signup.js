@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
+import { MyContext } from '../../MyContext';
 
 export default function Signup() {
+  const { userDetails, setUserDetails, setShowSignupModal, setSuccessMessage, token } = useContext(MyContext);
+
   // initial state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,11 +47,18 @@ export default function Signup() {
     axios(configuration)
       .then((result) => {
         setRegister(true);
+        setShowSignupModal(false);
         // Clear input fields after successful signup
         setEmail("");
         setPassword("");
         setLocation("");
         setFullName("");
+        console.log("resultconsole", result);
+          setSuccessMessage(`User ${result?.data?.result?.fullName} created successfully`);
+  
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
       })
       .catch((error) => {
         setValidationError("Registration failed. Please try again.");
@@ -115,7 +125,7 @@ export default function Signup() {
           type="submit"
           onClick={(e) => handleSubmit(e)}
         >
-          Sign Up
+          Create User
         </Button>
 
         {/* display success message or validation error */}

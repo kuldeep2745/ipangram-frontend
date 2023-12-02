@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Alert } from "react-bootstrap";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import Signup from "./components/auth/Signup";
@@ -16,6 +16,7 @@ export default function AuthComponent() {
   const [userList, setUserList] = useState([]);
   const [userDetails, setUserDetails] = useState([]);
   const [showSignupModal, setShowSignupModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     const configuration = {
@@ -60,6 +61,7 @@ export default function AuthComponent() {
       {isAdmin ? (
         <div>
           <h3 className="text-success">Admin Dashboard Content</h3>
+          {successMessage && <Alert variant="success">{successMessage}</Alert>}
           <Button variant="primary" onClick={handleCreateUser}>
             Create New User
           </Button>
@@ -85,7 +87,7 @@ export default function AuthComponent() {
           <Modal.Title>Create New User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <MyContext.Provider value={{ userList, setUserList, token }}>
+          <MyContext.Provider value={{ userList, setUserList, setShowSignupModal, setSuccessMessage, token }}>
             <Signup />
           </MyContext.Provider>
         </Modal.Body>
