@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Button, Alert, Modal, Form } from 'react-bootstrap';
 
 const UsersList = () => {
-  const { userList, departmentList, setUserList, token } = useContext(MyContext);
+  const { userList, departmentList, setUserList, token, handleCreateUser } = useContext(MyContext);
 
   const [sortField, setSortField] = useState('fullName');
 const [sortOrder, setSortOrder] = useState('asc');
@@ -179,9 +179,12 @@ const [sortOrder, setSortOrder] = useState('asc');
   return (
     <div>
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
+      <Button variant="primary" onClick={handleCreateUser}>
+            Create New User
+          </Button>{' '}
       <Button variant="primary" onClick={() => handleSort('fullName')}>Sort by Name</Button>{' '}
   <Button variant="primary" onClick={() => handleSort('location')}>Sort by Location</Button>{' '}
-  <Button variant="primary" onClick={() => handleToggleSortOrder()}>Toggle Sort Order</Button>{' '}
+  {/* <Button variant="primary" onClick={() => handleToggleSortOrder()}>Ascending/Descending</Button>{' '} */}
 
       <table className="table">
         <thead>

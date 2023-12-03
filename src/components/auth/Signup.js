@@ -70,7 +70,6 @@ export default function Signup() {
 
   return (
     <>
-      <h2>Create User</h2>
       <Form onSubmit={(e) => handleSubmit(e)}>
         {/* fullName */}
         <Form.Group controlId="formBasicFullName">
@@ -131,7 +130,7 @@ export default function Signup() {
             placeholder="Password"
           />
         </Form.Group>
-
+        <br />
         {/* submit button */}
         <Button
           variant="primary"

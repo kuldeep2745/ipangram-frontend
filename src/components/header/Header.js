@@ -8,7 +8,7 @@ const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
 const Header = () => {
-  const { isAdmin } = useContext(MyContext);
+  const { isAdmin, listing, setListing } = useContext(MyContext);
 
   const logout = () => {
     cookies.remove("TOKEN", { path: "/" });
@@ -19,6 +19,10 @@ const Header = () => {
     cookies.remove("TOKEN", { path: "/" });
   };
 
+  const listRender = () => {
+    setListing(!listing)
+  };
+
   return (
     <div>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -26,27 +30,27 @@ const Header = () => {
     <Button style={{marginRight:"10px"}} class="navbar-brand" type="submit" variant="danger" onClick={() => logout()}>
         Logout
       </Button>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         {isAdmin ? (
           <div>
-            <Button class="navbar-brand" type="submit" variant="danger">
-      <Link style={{color: "white", textDecoration: 'none'}} onClick={() => removeToken()} to="/">User Login</Link>
+            <Button style={{marginRight:"10px"}} class="btn btn-primary" type="submit" variant="danger">
+      <Link style={{color: "white", textDecoration: 'none'}} onClick={() => removeToken()} to="/">Login As User</Link>
       </Button>
+      <button style={{marginRight:"10px"}} class="btn btn-warning" type="submit" variant="danger" onClick={listRender}>
+        {listing ? ("Show Users List"): ("Show Departments List")}
+      </button>
+      <img style={{width:"50px", height:"50px", borderRadius:"50%"}} src="https://res.cloudinary.com/dwd3qhggm/image/upload/f_auto,q_auto/xrjslp7mams4hpt2mmcn" alt="profile"/>
           </div>
         ) : (
           <div>
-            <Button class="navbar-brand" type="submit" variant="danger">
-      <Link style={{color: "white", textDecoration: 'none'}} onClick={() => removeToken()} to="/manager">Manager Login</Link>
+            <Button style={{marginRight:"10px"}} class="btn btn-warning" type="submit" variant="danger">
+      <Link style={{color: "white", textDecoration: 'none'}} onClick={() => removeToken()} to="/manager">Login As Manager</Link>
       </Button>
+      <img style={{width:"50px", height:"50px", borderRadius:"50%"}} src="https://res.cloudinary.com/dwd3qhggm/image/upload/f_auto,q_auto/xrjslp7mams4hpt2mmcn" alt="profile"/>
           </div>
         )}
       </div>
     </div>
-  </div>
 </nav>
     </div>
   )

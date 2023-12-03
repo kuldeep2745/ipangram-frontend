@@ -87,7 +87,7 @@ export default function ManagerLogin() {
           <p className="text-danger">{errorMessage?.response?.statusText}</p>
         )}
       </Form>
-      <Link to="/">Login As User</Link>
+      <button type="button" class="btn btn-warning"><Link style={{color:"white", textDecoration:"none"}} to="/">Login As User</Link></button>
     </>
   );
 }

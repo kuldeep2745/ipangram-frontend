@@ -86,7 +86,7 @@ export default function Login() {
           <p className="text-danger">You Are Not Logged in</p>
         )}
       </Form>
-      <Link to="/manager">Login As Manager</Link>
+      <button type="button" class="btn btn-warning"><Link style={{color:"white", textDecoration:"none"}} to="/manager">Login As Manager</Link></button>
     </>
   );
 }

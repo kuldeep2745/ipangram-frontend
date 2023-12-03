@@ -21,6 +21,7 @@ export default function AuthComponent() {
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
   const [departmentList, setDepartmentList] = useState([]);
+  const [listing, setListing] = useState(false);
 
   useEffect(() => {
     const configuration = {
@@ -41,10 +42,6 @@ export default function AuthComponent() {
       });
   }, []);
 
-  // const logout = () => {
-  //   cookies.remove("TOKEN", { path: "/" });
-  //   window.location.href = "/";
-  // };
 
   const handleCreateUser = () => {
     setShowSignupModal(true);
@@ -56,29 +53,25 @@ export default function AuthComponent() {
 
   return (
     <div>
-      <MyContext.Provider value={{ isAdmin }}>
+      <MyContext.Provider value={{ isAdmin, listing, setListing }}>
         <Header />
       </MyContext.Provider>
-      {/* <Button type="submit" variant="danger" onClick={() => logout()}>
-        Logout
-      </Button> */}
 
       {/* Displaying different content based on user role */}
       {isAdmin ? (
         <div>
 
           {/* Display the DepartmentComponent */}
+          {listing? (
           <MyContext.Provider value={{ departmentList, setDepartmentList, token }}>
           <DepartmentComponent />
           </MyContext.Provider>
-
-          {successMessage && <Alert variant="success">{successMessage}</Alert>}
-          <Button variant="primary" onClick={handleCreateUser}>
-            Create New User
-          </Button>
-          <MyContext.Provider value={{ userList, departmentList, setUserList, token }}>
+          ): (
+          <MyContext.Provider value={{ userList, departmentList, setUserList, token, handleCreateUser }}>
             <UserList />
           </MyContext.Provider>
+          )}
+          {successMessage && <Alert variant="success">{successMessage}</Alert>}
         </div>
       ) : (
         <div>

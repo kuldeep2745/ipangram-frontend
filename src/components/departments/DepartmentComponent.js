@@ -13,7 +13,7 @@ const DepartmentComponent = () => {
   });
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(1); // Set the number of items per page
+  const [itemsPerPage] = useState(5); // Set the number of items per page
 
   useEffect(() => {
     // Fetch the list of departments
