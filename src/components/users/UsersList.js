@@ -6,6 +6,8 @@ import { Button, Alert, Modal, Form } from 'react-bootstrap';
 const UsersList = () => {
   const { userList, departmentList, setUserList, token } = useContext(MyContext);
 
+  const [sortField, setSortField] = useState('fullName');
+const [sortOrder, setSortOrder] = useState('asc');
   const [successMessage, setSuccessMessage] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedUser, setEditedUser] = useState({});
@@ -27,12 +29,12 @@ const UsersList = () => {
   useEffect(() => {
     const authConfig = {
       method: 'get',
-      url: 'http://localhost:3000/users',
+      url: `http://localhost:3000/users?sortField=${sortField}&sortOrder=${sortOrder}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-
+  
     axios(authConfig)
       .then((result) => {
         setUserList(result?.data);
@@ -40,7 +42,23 @@ const UsersList = () => {
       .catch((error) => {
         console.error('Error fetching user:', error);
       });
-  }, [setUserList, token, editedUser]); // Added `editedUser` as a dependency
+  }, [setUserList, token, editedUser, sortField, sortOrder]);
+
+  const handleSort = (field) => {
+    // If the same field is clicked again, toggle the sort order
+    if (field === sortField) {
+      setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
+    } else {
+      // If a different field is clicked, set the new field and default to ascending order
+      setSortField(field);
+      setSortOrder('asc');
+    }
+  };
+  
+  const handleToggleSortOrder = () => {
+    // Toggle the current sort order
+    setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
+  };
 
   const handleDelete = (userId, userName) => {
     axios
@@ -161,6 +179,9 @@ const UsersList = () => {
   return (
     <div>
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
+      <Button variant="primary" onClick={() => handleSort('fullName')}>Sort by Name</Button>{' '}
+  <Button variant="primary" onClick={() => handleSort('location')}>Sort by Location</Button>{' '}
+  <Button variant="primary" onClick={() => handleToggleSortOrder()}>Toggle Sort Order</Button>{' '}
 
       <table className="table">
         <thead>
