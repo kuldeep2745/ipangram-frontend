@@ -9,6 +9,7 @@ import { MyContext } from "./MyContext";
 import DepartmentComponent from "./components/departments/DepartmentComponent";
 import Header from "./components/header/Header";
 
+
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
@@ -40,10 +41,10 @@ export default function AuthComponent() {
       });
   }, []);
 
-  const logout = () => {
-    cookies.remove("TOKEN", { path: "/" });
-    window.location.href = "/";
-  };
+  // const logout = () => {
+  //   cookies.remove("TOKEN", { path: "/" });
+  //   window.location.href = "/";
+  // };
 
   const handleCreateUser = () => {
     setShowSignupModal(true);
@@ -54,10 +55,13 @@ export default function AuthComponent() {
   };
 
   return (
-    <div className="text-center">
-      <Button type="submit" variant="danger" onClick={() => logout()}>
+    <div>
+      <MyContext.Provider value={{ isAdmin }}>
+        <Header />
+      </MyContext.Provider>
+      {/* <Button type="submit" variant="danger" onClick={() => logout()}>
         Logout
-      </Button>
+      </Button> */}
 
       {/* Displaying different content based on user role */}
       {isAdmin ? (
@@ -84,7 +88,7 @@ export default function AuthComponent() {
         </div>
       )}
 
-      <h3 className="text-danger">{message}</h3>
+      {/* <h3 className="text-danger">{message}</h3> */}
 
       {/* Signup Modal */}
       <Modal show={showSignupModal} onHide={handleCloseSignupModal}>

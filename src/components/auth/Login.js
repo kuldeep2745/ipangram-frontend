@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { Switch, Route, Link } from "react-router-dom";
 const cookies = new Cookies();
 
 export default function Login() {
@@ -85,6 +86,7 @@ export default function Login() {
           <p className="text-danger">You Are Not Logged in</p>
         )}
       </Form>
+      <Link to="/manager">Login As Manager</Link>
     </>
   );
 }

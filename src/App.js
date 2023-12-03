@@ -8,15 +8,15 @@ import ProtectedRoutes from "./ProtectedRoutes";
 function App() {
   return (
     <Container>
-      <Row>
+      {/* <Row>
         <Col className="text-center">
           <section id="navigation">
   <Link to="/">User Login</Link>
-  <Link to="/manager">Manager Login</Link>
+  <Link to="/manager">Manager Login</Link> */}
   {/* <Link to="/auth">Auth Component</Link> */}
-</section>
+{/* </section>
         </Col>
-      </Row>
+      </Row> */}
 
       {/* create routes here */}
       <Switch>

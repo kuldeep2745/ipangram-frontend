@@ -38,7 +38,7 @@ const UsersList = () => {
       .catch((error) => {
         console.error('Error fetching user:', error);
       });
-  }, [setUserList, token]);
+  }, [setUserList, token, editedUser]); // Added `editedUser` as a dependency
 
   const handleDelete = (userId, userName) => {
     axios
@@ -74,20 +74,20 @@ const UsersList = () => {
   const validateForm = () => {
     const errors = {};
 
-    if (!editFormData.fullName.trim()) {
+    if (!editFormData.fullName?.trim()) {
       errors.fullName = 'Full Name is required';
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!editFormData.email.trim() || !emailPattern.test(editFormData.email)) {
+    if (!editFormData.email?.trim() || !emailPattern.test(editFormData.email)) {
       errors.email = 'Valid Email is required';
     }
 
-    if (!editFormData.location.trim()) {
+    if (!editFormData.location?.trim()) {
       errors.location = 'Location is required';
     }
 
-    if (!editFormData.department.trim()) {
+    if (!editFormData.department?.trim()) {
       errors.department = 'Department is required';
     }
 
@@ -132,6 +132,13 @@ const UsersList = () => {
         }, 3000);
 
         setShowEditModal(false);
+        setEditedUser({});
+        setEditFormData({
+          fullName: '',
+          email: '',
+          location: '',
+          department: '',
+        });
       })
       .catch((error) => {
         console.error('Error editing user:', error);
@@ -218,14 +225,27 @@ const UsersList = () => {
             <Form.Group controlId="formDepartment">
               <Form.Label>Department</Form.Label>
               {/* department */}
-          <select onChange={(e) => setEditFormData({ ...editFormData, department: e.target.value
-          })} class="form-select" aria-label="Default select example" isInvalid={!!validationErrors.department}>
-          <option selected>Open this select menu</option>
-            {departmentList?.map((item, index)=>(
-              <option key={index} value={item?.name}>{item?.name}</option>
-              ))}
+              <select
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, department: e.target.value })
+                }
+                className="form-select"
+                aria-label="Default select example"
+                value={editFormData.department}
+                isInvalid={!!validationErrors.department}
+              >
+                <option value="" defaultValue>
+                  Open this select menu
+                </option>
+                {departmentList?.map((item, index) => (
+                  <option key={index} value={item?.name}>
+                    {item?.name}
+                  </option>
+                ))}
               </select>
-              <Form.Control.Feedback type="invalid">{validationErrors.department}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.department}
+              </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
