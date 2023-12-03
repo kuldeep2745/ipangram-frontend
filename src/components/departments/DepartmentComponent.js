@@ -1,5 +1,3 @@
-// DepartmentComponent.js
-
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Button, Modal, Form } from "react-bootstrap";
@@ -14,6 +12,8 @@ const DepartmentComponent = () => {
     name: ""
   });
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // Set the number of items per page
 
   useEffect(() => {
     // Fetch the list of departments
@@ -116,6 +116,17 @@ const DepartmentComponent = () => {
       });
   };
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = departmentList?.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalItems = departmentList?.length;
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <div>
       {/* Button to open the modal for creating a new department */}
@@ -133,9 +144,9 @@ const DepartmentComponent = () => {
           </tr>
         </thead>
         <tbody>
-          {departmentList?.map((department, index) => (
+          {currentItems?.map((department, index) => (
             <tr key={department._id}>
-              <th scope="row">{index + 1}</th>
+              <th scope="row">{indexOfFirstItem + index + 1}</th>
               <td>{department?.name}</td>
               <td>
                 <Button variant="danger" onClick={() => handleDeleteDepartment(department._id)}>
@@ -149,6 +160,17 @@ const DepartmentComponent = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <ul className="pagination">
+        {pageNumbers.map((number) => (
+          <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+            <button className="page-link" onClick={() => setCurrentPage(number)}>
+              {number}
+            </button>
+          </li>
+        ))}
+      </ul>
 
       {/* Modal for creating/editing a department */}
       <Modal show={showModal} onHide={handleCloseModal}>

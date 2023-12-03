@@ -21,6 +21,8 @@ const UsersList = () => {
     location: '',
     department: '',
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // Set the number of items per page
 
   useEffect(() => {
     const authConfig = {
@@ -145,6 +147,17 @@ const UsersList = () => {
       });
   };
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = userList?.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalItems = userList?.length;
+  const pageNumbers = [];
+
+  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
   return (
     <div>
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
@@ -161,9 +174,9 @@ const UsersList = () => {
           </tr>
         </thead>
         <tbody>
-          {userList?.map((item, index) => (
+          {currentItems?.map((item, index) => (
             <tr key={index}>
-              <th scope="row">{index + 1}</th>
+              <th scope="row">{indexOfFirstItem + index + 1}</th>
               <td>{item.fullName}</td>
               <td>{item.location}</td>
               <td>{item.email}</td>
@@ -180,6 +193,17 @@ const UsersList = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Pagination */}
+      <ul className="pagination">
+        {pageNumbers.map((number) => (
+          <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+            <button className="page-link" onClick={() => setCurrentPage(number)}>
+              {number}
+            </button>
+          </li>
+        ))}
+      </ul>
 
       {/* Edit User Modal */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
@@ -224,7 +248,6 @@ const UsersList = () => {
 
             <Form.Group controlId="formDepartment">
               <Form.Label>Department</Form.Label>
-              {/* department */}
               <select
                 onChange={(e) =>
                   setEditFormData({ ...editFormData, department: e.target.value })
