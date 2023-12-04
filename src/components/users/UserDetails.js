@@ -18,7 +18,7 @@ const UserDetails = () => {
     
       axios(authConfig)
         .then((result) => {
-          setUserDetails([result.data]); // Wrap the result in an array
+          setUserDetails([result.data]);
         })
         .catch((error) => {
           console.error("Error fetching user:", error);
