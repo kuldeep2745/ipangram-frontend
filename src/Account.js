@@ -12,9 +12,9 @@ export default function Account() {
       </Col> */}
 
       {/* Login */}
-      <Col xs={12} sm={12} md={6} lg={6}>
+      {/* <Col xs={12} sm={12} md={6} lg={6}> */}
         <Login />
-      </Col>
+      {/* </Col> */}
     </Row>
   );
 }

@@ -43,9 +43,9 @@ const Header = () => {
           </div>
         ) : (
           <div>
-            <Button style={{marginRight:"10px"}} class="btn btn-warning" type="submit" variant="danger">
+            <button style={{marginRight:"10px"}} class="btn btn-primary" type="submit" variant="danger">
       <Link style={{color: "white", textDecoration: 'none'}} onClick={() => removeToken()} to="/manager">Login As Manager</Link>
-      </Button>
+      </button>
       <img style={{width:"50px", height:"50px", borderRadius:"50%"}} src="https://res.cloudinary.com/dwd3qhggm/image/upload/f_auto,q_auto/xrjslp7mams4hpt2mmcn" alt="profile"/>
           </div>
         )}

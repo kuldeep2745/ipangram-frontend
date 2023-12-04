@@ -178,6 +178,7 @@ const [sortOrder, setSortOrder] = useState('asc');
 
   return (
     <div>
+      <h2 style={{display:"flex", alignItems: "center", flexDirection: "column"}}>Users List</h2>
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
       <Button variant="primary" onClick={handleCreateUser}>
             Create New User

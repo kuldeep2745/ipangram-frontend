@@ -129,6 +129,7 @@ const DepartmentComponent = () => {
 
   return (
     <div>
+      <h2 style={{display:"flex", alignItems: "center", flexDirection: "column"}}>Departments List</h2>
       {/* Button to open the modal for creating a new department */}
       <Button variant="primary" onClick={openCreateModal}>
         Create New Department

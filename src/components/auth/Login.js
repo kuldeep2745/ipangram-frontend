@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import LoginHeader from "../header/LoginHeader";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { Switch, Route, Link } from "react-router-dom";
+
 const cookies = new Cookies();
 
 export default function Login() {
@@ -44,6 +46,9 @@ export default function Login() {
 
   return (
     <>
+    <LoginHeader />
+    <div style={{width:"406px", height:"301px", marginTop:"50px", marginLeft:"350px"}}>
+      <div style={{display:"flex", flexDirection: "column", alignItems:"center", boxShadow:"10px 10px 10px 10px grey"}}>
       <h2>User Login</h2>
       <Form onSubmit={(e) => handleSubmit(e)}>
         {/* email */}
@@ -87,6 +92,8 @@ export default function Login() {
         )}
       </Form>
       <button type="button" class="btn btn-warning"><Link style={{color:"white", textDecoration:"none"}} to="/manager">Login As Manager</Link></button>
+      </div>
+      </div>
     </>
   );
 }
