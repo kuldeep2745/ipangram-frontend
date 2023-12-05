@@ -9,7 +9,6 @@ import { MyContext } from "./MyContext";
 import DepartmentComponent from "./components/departments/DepartmentComponent";
 import Header from "./components/header/Header";
 
-
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
@@ -42,7 +41,6 @@ export default function AuthComponent() {
       });
   }, []);
 
-
   const handleCreateUser = () => {
     setShowSignupModal(true);
   };
@@ -60,22 +58,33 @@ export default function AuthComponent() {
       {/* Displaying different content based on user role */}
       {isAdmin ? (
         <div>
-
           {/* Display the DepartmentComponent */}
-          {listing? (
-          <MyContext.Provider value={{ departmentList, setDepartmentList, token }}>
-          <DepartmentComponent />
-          </MyContext.Provider>
-          ): (
-          <MyContext.Provider value={{ userList, departmentList, setUserList, token, handleCreateUser }}>
-            <UserList />
-          </MyContext.Provider>
+          {listing ? (
+            <MyContext.Provider
+              value={{ departmentList, setDepartmentList, token }}
+            >
+              <DepartmentComponent />
+            </MyContext.Provider>
+          ) : (
+            <MyContext.Provider
+              value={{
+                userList,
+                departmentList,
+                setUserList,
+                token,
+                handleCreateUser,
+              }}
+            >
+              <UserList />
+            </MyContext.Provider>
           )}
           {successMessage && <Alert variant="success">{successMessage}</Alert>}
         </div>
       ) : (
         <div>
-          <MyContext.Provider value={{ userDetails, departmentList, setUserDetails, token }}>
+          <MyContext.Provider
+            value={{ userDetails, departmentList, setUserDetails, token }}
+          >
             <UserDetails />
           </MyContext.Provider>
         </div>
@@ -89,7 +98,16 @@ export default function AuthComponent() {
           <Modal.Title>Create New User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <MyContext.Provider value={{ userList, departmentList, setUserList, setShowSignupModal, setSuccessMessage, token }}>
+          <MyContext.Provider
+            value={{
+              userList,
+              departmentList,
+              setUserList,
+              setShowSignupModal,
+              setSuccessMessage,
+              token,
+            }}
+          >
             <Signup />
           </MyContext.Provider>
         </Modal.Body>

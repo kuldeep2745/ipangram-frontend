@@ -46,53 +46,74 @@ export default function Login() {
 
   return (
     <>
-    <LoginHeader />
-    <div style={{width:"406px", height:"301px", marginTop:"50px", marginLeft:"350px"}}>
-      <div style={{display:"flex", flexDirection: "column", alignItems:"center", boxShadow:"10px 10px 10px 10px grey"}}>
-      <h2>User Login</h2>
-      <Form onSubmit={(e) => handleSubmit(e)}>
-        {/* email */}
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email"
-          />
-        </Form.Group>
-
-        {/* password */}
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-        </Form.Group>
-
-        {/* submit button */}
-        <Button
-          variant="primary"
-          type="submit"
-          onClick={(e) => handleSubmit(e)}
+      <LoginHeader />
+      <div
+        style={{
+          width: "406px",
+          height: "301px",
+          marginTop: "50px",
+          marginLeft: "350px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            boxShadow: "10px 10px 10px 10px grey",
+          }}
         >
-          Login
-        </Button>
+          <h2>User Login</h2>
+          <Form onSubmit={(e) => handleSubmit(e)}>
+            {/* email */}
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter email"
+              />
+            </Form.Group>
 
-        {/* display success message */}
-        {login ? (
-          <p className="text-success">You Are Logged in Successfully</p>
-        ) : (
-          <p className="text-danger">You Are Not Logged in</p>
-        )}
-      </Form>
-      <button type="button" class="btn btn-warning"><Link style={{color:"white", textDecoration:"none"}} to="/manager">Login As Manager</Link></button>
-      </div>
+            {/* password */}
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+              />
+            </Form.Group>
+
+            {/* submit button */}
+            <Button
+              variant="primary"
+              type="submit"
+              onClick={(e) => handleSubmit(e)}
+            >
+              Login
+            </Button>
+
+            {/* display success message */}
+            {login ? (
+              <p className="text-success">You Are Logged in Successfully</p>
+            ) : (
+              <p className="text-danger">You Are Not Logged in</p>
+            )}
+          </Form>
+          <button type="button" class="btn btn-warning">
+            <Link
+              style={{ color: "white", textDecoration: "none" }}
+              to="/manager"
+            >
+              Login As Manager
+            </Link>
+          </button>
+        </div>
       </div>
     </>
   );

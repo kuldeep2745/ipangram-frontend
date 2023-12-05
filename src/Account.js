@@ -6,7 +6,7 @@ import Login from "./components/auth/Login";
 export default function Account() {
   return (
     <Row>
-        <Login />
+      <Login />
     </Row>
   );
 }

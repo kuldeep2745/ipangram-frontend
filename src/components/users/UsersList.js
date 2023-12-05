@@ -1,63 +1,66 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { MyContext } from '../../MyContext';
-import axios from 'axios';
-import { Button, Alert, Modal, Form } from 'react-bootstrap';
+import React, { useEffect, useContext, useState } from "react";
+import { MyContext } from "../../MyContext";
+import axios from "axios";
+import { Button, Alert, Modal, Form } from "react-bootstrap";
 
 const UsersList = () => {
-  const { userList, departmentList, setUserList, token, handleCreateUser } = useContext(MyContext);
+  const { userList, departmentList, setUserList, token, handleCreateUser } =
+    useContext(MyContext);
 
-  const [sortField, setSortField] = useState('fullName');
-const [sortOrder, setSortOrder] = useState('asc');
+  const [sortField, setSortField] = useState("fullName");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [successMessage, setSuccessMessage] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedUser, setEditedUser] = useState({});
   const [editFormData, setEditFormData] = useState({
-    fullName: '',
-    email: '',
-    location: '',
-    department: '',
+    fullName: "",
+    email: "",
+    location: "",
+    department: "",
   });
   const [validationErrors, setValidationErrors] = useState({
-    fullName: '',
-    email: '',
-    location: '',
-    department: '',
+    fullName: "",
+    email: "",
+    location: "",
+    department: "",
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5); // Set the number of items per page
 
   useEffect(() => {
     const authConfig = {
-      method: 'get',
+      method: "get",
       url: `http://localhost:3000/users?sortField=${sortField}&sortOrder=${sortOrder}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-  
+
     axios(authConfig)
       .then((result) => {
         setUserList(result?.data);
       })
       .catch((error) => {
-        console.error('Error fetching user:', error);
+        console.error("Error fetching user:", error);
       });
   }, [setUserList, token, editedUser, sortField, sortOrder]);
 
   const handleSort = (field) => {
     // If the same field is clicked again, toggle the sort order
     if (field === sortField) {
-      setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
+      setSortOrder((prevSortOrder) =>
+        prevSortOrder === "asc" ? "desc" : "asc"
+      );
     } else {
       // If a different field is clicked, set the new field and default to ascending order
       setSortField(field);
-      setSortOrder('asc');
+      setSortOrder("asc");
     }
   };
-  
+
   const handleToggleSortOrder = () => {
     // Toggle the current sort order
-    setSortOrder((prevSortOrder) => (prevSortOrder === 'asc' ? 'desc' : 'asc'));
+    setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
   };
 
   const handleDelete = (userId, userName) => {
@@ -68,7 +71,9 @@ const [sortOrder, setSortOrder] = useState('asc');
         },
       })
       .then((response) => {
-        setUserList((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+        setUserList((prevUsers) =>
+          prevUsers.filter((user) => user._id !== userId)
+        );
         setSuccessMessage(`${userName} deleted successfully`);
 
         setTimeout(() => {
@@ -76,7 +81,7 @@ const [sortOrder, setSortOrder] = useState('asc');
         }, 5000);
       })
       .catch((error) => {
-        console.error('Error deleting user:', error);
+        console.error("Error deleting user:", error);
       });
   };
 
@@ -95,25 +100,25 @@ const [sortOrder, setSortOrder] = useState('asc');
     const errors = {};
 
     if (!editFormData.fullName?.trim()) {
-      errors.fullName = 'Full Name is required';
+      errors.fullName = "Full Name is required";
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!editFormData.email?.trim() || !emailPattern.test(editFormData.email)) {
-      errors.email = 'Valid Email is required';
+      errors.email = "Valid Email is required";
     }
 
     if (!editFormData.location?.trim()) {
-      errors.location = 'Location is required';
+      errors.location = "Location is required";
     }
 
     if (!editFormData.department?.trim()) {
-      errors.department = 'Department is required';
+      errors.department = "Department is required";
     }
 
     setValidationErrors(errors);
 
-    return Object.values(errors).every((error) => error === '');
+    return Object.values(errors).every((error) => error === "");
   };
 
   const handleEditSubmit = () => {
@@ -131,18 +136,16 @@ const [sortOrder, setSortOrder] = useState('asc');
     };
 
     axios
-      .put(
-        `http://localhost:3000/users/${_id}`,
-        updatedUserData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .put(`http://localhost:3000/users/${_id}`, updatedUserData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         setUserList((prevUsers) =>
-          prevUsers.map((user) => (user._id === _id ? { ...user, ...response.data } : user))
+          prevUsers.map((user) =>
+            user._id === _id ? { ...user, ...response.data } : user
+          )
         );
 
         setSuccessMessage(`${editFormData.fullName} updated successfully`);
@@ -154,14 +157,14 @@ const [sortOrder, setSortOrder] = useState('asc');
         setShowEditModal(false);
         setEditedUser({});
         setEditFormData({
-          fullName: '',
-          email: '',
-          location: '',
-          department: '',
+          fullName: "",
+          email: "",
+          location: "",
+          department: "",
         });
       })
       .catch((error) => {
-        console.error('Error editing user:', error);
+        console.error("Error editing user:", error);
       });
   };
 
@@ -178,15 +181,26 @@ const [sortOrder, setSortOrder] = useState('asc');
 
   return (
     <div>
-      <h2 style={{display:"flex", alignItems: "center", flexDirection: "column"}}>Users List</h2>
+      <h2
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        Users List
+      </h2>
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
       <Button variant="primary" onClick={handleCreateUser}>
-            Create New User
-          </Button>{' '}
-      <Button variant="primary" onClick={() => handleSort('fullName')}>Sort by Name</Button>{' '}
-  <Button variant="primary" onClick={() => handleSort('location')}>Sort by Location</Button>{' '}
-  {/* <Button variant="primary" onClick={() => handleToggleSortOrder()}>Ascending/Descending</Button>{' '} */}
-
+        Create New User
+      </Button>{" "}
+      <Button variant="primary" onClick={() => handleSort("fullName")}>
+        Sort by Name
+      </Button>{" "}
+      <Button variant="primary" onClick={() => handleSort("location")}>
+        Sort by Location
+      </Button>{" "}
+      {/* <Button variant="primary" onClick={() => handleToggleSortOrder()}>Ascending/Descending</Button>{' '} */}
       <table className="table">
         <thead>
           <tr>
@@ -207,9 +221,12 @@ const [sortOrder, setSortOrder] = useState('asc');
               <td>{item.email}</td>
               <td>{item.department}</td>
               <td>
-                <Button variant="danger" onClick={() => handleDelete(item?._id, item?.fullName)}>
+                <Button
+                  variant="danger"
+                  onClick={() => handleDelete(item?._id, item?.fullName)}
+                >
                   Delete
-                </Button>{' '}
+                </Button>{" "}
                 <Button variant="primary" onClick={() => handleEdit(item)}>
                   Edit
                 </Button>
@@ -218,18 +235,22 @@ const [sortOrder, setSortOrder] = useState('asc');
           ))}
         </tbody>
       </table>
-
       {/* Pagination */}
       <ul className="pagination">
         {pageNumbers.map((number) => (
-          <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-            <button className="page-link" onClick={() => setCurrentPage(number)}>
+          <li
+            key={number}
+            className={`page-item ${currentPage === number ? "active" : ""}`}
+          >
+            <button
+              className="page-link"
+              onClick={() => setCurrentPage(number)}
+            >
               {number}
             </button>
           </li>
         ))}
       </ul>
-
       {/* Edit User Modal */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
@@ -243,10 +264,14 @@ const [sortOrder, setSortOrder] = useState('asc');
                 type="text"
                 placeholder="Enter full name"
                 value={editFormData.fullName}
-                onChange={(e) => setEditFormData({ ...editFormData, fullName: e.target.value })}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, fullName: e.target.value })
+                }
                 isInvalid={!!validationErrors.fullName}
               />
-              <Form.Control.Feedback type="invalid">{validationErrors.fullName}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.fullName}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formEmail">
               <Form.Label>Email</Form.Label>
@@ -254,10 +279,14 @@ const [sortOrder, setSortOrder] = useState('asc');
                 type="email"
                 placeholder="Enter email"
                 value={editFormData.email}
-                onChange={(e) => setEditFormData({ ...editFormData, email: e.target.value })}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, email: e.target.value })
+                }
                 isInvalid={!!validationErrors.email}
               />
-              <Form.Control.Feedback type="invalid">{validationErrors.email}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.email}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formLocation">
               <Form.Label>Location</Form.Label>
@@ -265,17 +294,24 @@ const [sortOrder, setSortOrder] = useState('asc');
                 type="text"
                 placeholder="Enter location"
                 value={editFormData.location}
-                onChange={(e) => setEditFormData({ ...editFormData, location: e.target.value })}
+                onChange={(e) =>
+                  setEditFormData({ ...editFormData, location: e.target.value })
+                }
                 isInvalid={!!validationErrors.location}
               />
-              <Form.Control.Feedback type="invalid">{validationErrors.location}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {validationErrors.location}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group controlId="formDepartment">
               <Form.Label>Department</Form.Label>
               <select
                 onChange={(e) =>
-                  setEditFormData({ ...editFormData, department: e.target.value })
+                  setEditFormData({
+                    ...editFormData,
+                    department: e.target.value,
+                  })
                 }
                 className="form-select"
                 aria-label="Default select example"

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Button, Modal, Form } from "react-bootstrap";
-import { MyContext } from '../../MyContext';
+import { MyContext } from "../../MyContext";
 
 const DepartmentComponent = () => {
   const { departmentList, setDepartmentList, token } = useContext(MyContext);
@@ -9,7 +9,7 @@ const DepartmentComponent = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [departmentData, setDepartmentData] = useState({
-    name: ""
+    name: "",
   });
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,15 +50,11 @@ const DepartmentComponent = () => {
   const handleCreateDepartment = () => {
     // Logic for creating a new department
     axios
-      .post(
-        "http://localhost:3000/departments",
-        departmentData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post("http://localhost:3000/departments", departmentData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         // Update the list of departments after successful creation
         setDepartmentList([...departmentList, response.data]);
@@ -87,7 +83,9 @@ const DepartmentComponent = () => {
           // Update the list of departments after successful edit
           setDepartmentList(
             departmentList.map((department) =>
-              department._id === selectedDepartment._id ? response.data : department
+              department._id === selectedDepartment._id
+                ? response.data
+                : department
             )
           );
           // Close the modal
@@ -109,7 +107,9 @@ const DepartmentComponent = () => {
       })
       .then(() => {
         // Update the list of departments after successful deletion
-        setDepartmentList(departmentList.filter((department) => department._id !== departmentId));
+        setDepartmentList(
+          departmentList.filter((department) => department._id !== departmentId)
+        );
       })
       .catch((error) => {
         console.error("Error deleting department:", error);
@@ -129,7 +129,15 @@ const DepartmentComponent = () => {
 
   return (
     <div>
-      <h2 style={{display:"flex", alignItems: "center", flexDirection: "column"}}>Departments List</h2>
+      <h2
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        Departments List
+      </h2>
       {/* Button to open the modal for creating a new department */}
       <Button variant="primary" onClick={openCreateModal}>
         Create New Department
@@ -150,10 +158,16 @@ const DepartmentComponent = () => {
               <th scope="row">{indexOfFirstItem + index + 1}</th>
               <td>{department?.name}</td>
               <td>
-                <Button variant="danger" onClick={() => handleDeleteDepartment(department._id)}>
+                <Button
+                  variant="danger"
+                  onClick={() => handleDeleteDepartment(department._id)}
+                >
                   Delete
                 </Button>{" "}
-                <Button variant="primary" onClick={() => openEditModal(department)}>
+                <Button
+                  variant="primary"
+                  onClick={() => openEditModal(department)}
+                >
                   Edit
                 </Button>
               </td>
@@ -165,8 +179,14 @@ const DepartmentComponent = () => {
       {/* Pagination */}
       <ul className="pagination">
         {pageNumbers.map((number) => (
-          <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
-            <button className="page-link" onClick={() => setCurrentPage(number)}>
+          <li
+            key={number}
+            className={`page-item ${currentPage === number ? "active" : ""}`}
+          >
+            <button
+              className="page-link"
+              onClick={() => setCurrentPage(number)}
+            >
               {number}
             </button>
           </li>
@@ -186,7 +206,9 @@ const DepartmentComponent = () => {
                 type="text"
                 placeholder="Enter department name"
                 value={departmentData.name}
-                onChange={(e) => setDepartmentData({ ...departmentData, name: e.target.value })}
+                onChange={(e) =>
+                  setDepartmentData({ ...departmentData, name: e.target.value })
+                }
               />
             </Form.Group>
           </Form>
@@ -195,7 +217,10 @@ const DepartmentComponent = () => {
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={isEditMode ? handleEditDepartment : handleCreateDepartment}>
+          <Button
+            variant="primary"
+            onClick={isEditMode ? handleEditDepartment : handleCreateDepartment}
+          >
             {isEditMode ? "Edit" : "Create"} Department
           </Button>
         </Modal.Footer>

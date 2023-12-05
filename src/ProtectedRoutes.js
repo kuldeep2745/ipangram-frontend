@@ -6,7 +6,6 @@ const cookies = new Cookies();
 // receives component and any other props represented by ...rest
 export default function ProtectedRoutes({ component: Component, ...rest }) {
   return (
-
     // this route takes other route assigned to it from the App.js and return the same route if condition is met
     <Route
       {...rest}

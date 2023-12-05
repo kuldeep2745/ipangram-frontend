@@ -1,10 +1,17 @@
 import React, { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
-import { MyContext } from '../../MyContext';
+import { MyContext } from "../../MyContext";
 
 export default function Signup() {
-  const { userDetails, setUserDetails, departmentList, setShowSignupModal, setSuccessMessage, token } = useContext(MyContext);
+  const {
+    userDetails,
+    setUserDetails,
+    departmentList,
+    setShowSignupModal,
+    setSuccessMessage,
+    token,
+  } = useContext(MyContext);
 
   // initial state
   const [email, setEmail] = useState("");
@@ -57,8 +64,10 @@ export default function Signup() {
         setFullName("");
         setDepartment(""); // Clear department field
         console.log("resultconsole", result);
-        setSuccessMessage(`User ${result?.data?.result?.fullName} created successfully`);
-  
+        setSuccessMessage(
+          `User ${result?.data?.result?.fullName} created successfully`
+        );
+
         setTimeout(() => {
           setSuccessMessage(null);
         }, 5000);
@@ -98,14 +107,19 @@ export default function Signup() {
         {/* department */}
         <Form.Group controlId="formBasicDepartment">
           <Form.Label>Department</Form.Label>
-          <select onChange={(e) => setDepartment(e.target.value)} class="form-select" aria-label="Default select example">
-          <option selected>Open this select menu</option>
-            {departmentList?.map((item, index)=>(
-              <option key={index} value={item?.name}>{item?.name}</option>
-
-))}
-</select>
-        </Form.Group> 
+          <select
+            onChange={(e) => setDepartment(e.target.value)}
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <option selected>Open this select menu</option>
+            {departmentList?.map((item, index) => (
+              <option key={index} value={item?.name}>
+                {item?.name}
+              </option>
+            ))}
+          </select>
+        </Form.Group>
 
         {/* email */}
         <Form.Group controlId="formBasicEmail">
