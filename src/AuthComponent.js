@@ -23,6 +23,14 @@ export default function AuthComponent() {
   const [listing, setListing] = useState(false);
 
   useEffect(() => {
+      axios
+        .get("http://localhost:3000/departments")
+        .then((response) => {
+          setDepartmentList(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching departments:", error);
+        });
     const configuration = {
       method: "get",
       url: "http://localhost:3000/auth-endpoint",
