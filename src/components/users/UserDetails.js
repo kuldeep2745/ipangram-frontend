@@ -10,7 +10,7 @@ const UserDetails = () => {
   useEffect(() => {
     const authConfig = {
       method: "get",
-      url: "http://localhost:3000/user",
+      url: "http://truth-snow-bowl.glitch.me/user",
       headers: {
         Authorization: `Bearer ${token}`,
       },

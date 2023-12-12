@@ -20,7 +20,7 @@ export default function Login() {
     // set configurations
     const configuration = {
       method: "post",
-      url: "http://localhost:3000/login",
+      url: "http://truth-snow-bowl.glitch.me/login",
       data: {
         email,
         password,

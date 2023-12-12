@@ -30,7 +30,7 @@ const UsersList = () => {
   useEffect(() => {
     const authConfig = {
       method: "get",
-      url: `http://localhost:3000/users?sortField=${sortField}&sortOrder=${sortOrder}`,
+      url: `http://truth-snow-bowl.glitch.me/users?sortField=${sortField}&sortOrder=${sortOrder}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -65,7 +65,7 @@ const UsersList = () => {
 
   const handleDelete = (userId, userName) => {
     axios
-      .delete(`http://localhost:3000/users/${userId}`, {
+      .delete(`http://truth-snow-bowl.glitch.me/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -136,7 +136,7 @@ const UsersList = () => {
     };
 
     axios
-      .put(`http://localhost:3000/users/${_id}`, updatedUserData, {
+      .put(`http://truth-snow-bowl.glitch.me/users/${_id}`, updatedUserData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

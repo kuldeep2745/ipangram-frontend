@@ -18,7 +18,7 @@ export default function ManagerLogin() {
 
     const configuration = {
       method: "post",
-      url: "http://localhost:3000/admin-login-dummy",
+      url: "http://truth-snow-bowl.glitch.me/admin-login-dummy",
       data: {
         email,
         password,
