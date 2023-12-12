@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "homepage": "https://kuldeep2745.github.io/ipangram-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
