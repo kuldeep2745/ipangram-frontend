@@ -18,7 +18,7 @@ const DepartmentComponent = () => {
   useEffect(() => {
     // Fetch the list of departments
     axios
-      .get("http://truth-snow-bowl.glitch.me/departments")
+      .get("https://truth-snow-bowl.glitch.me/departments")
       .then((response) => {
         setDepartmentList(response.data);
       })
@@ -50,7 +50,7 @@ const DepartmentComponent = () => {
   const handleCreateDepartment = () => {
     // Logic for creating a new department
     axios
-      .post("http://truth-snow-bowl.glitch.me/departments", departmentData, {
+      .post("https://truth-snow-bowl.glitch.me/departments", departmentData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -71,7 +71,7 @@ const DepartmentComponent = () => {
     if (selectedDepartment) {
       axios
         .put(
-          `http://truth-snow-bowl.glitch.me/departments/${selectedDepartment._id}`,
+          `https://truth-snow-bowl.glitch.me/departments/${selectedDepartment._id}`,
           departmentData,
           {
             headers: {
@@ -100,7 +100,7 @@ const DepartmentComponent = () => {
   const handleDeleteDepartment = (departmentId) => {
     // Logic for deleting a department
     axios
-      .delete(`http://truth-snow-bowl.glitch.me/departments/${departmentId}`, {
+      .delete(`https://truth-snow-bowl.glitch.me/departments/${departmentId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

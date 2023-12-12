@@ -24,7 +24,7 @@ export default function AuthComponent() {
 
   useEffect(() => {
       axios
-        .get("http://truth-snow-bowl.glitch.me/departments")
+        .get("https://truth-snow-bowl.glitch.me/departments")
         .then((response) => {
           setDepartmentList(response.data);
         })
@@ -33,7 +33,7 @@ export default function AuthComponent() {
         });
     const configuration = {
       method: "get",
-      url: "http://truth-snow-bowl.glitch.me/auth-endpoint",
+      url: "https://truth-snow-bowl.glitch.me/auth-endpoint",
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -42,7 +42,7 @@ export default function Signup() {
     // set configurations
     const configuration = {
       method: "post",
-      url: "http://truth-snow-bowl.glitch.me/register",
+      url: "https://truth-snow-bowl.glitch.me/register",
       data: {
         email,
         password,
