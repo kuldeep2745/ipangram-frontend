@@ -17,6 +17,9 @@
     "universal-cookie": "^6.1.1",
     "web-vitals": "^2.1.4"
   },
+
+  "homepage": "https://kuldeep2745.github.io/ipangram-frontend",
+
   "scripts": {
     "predeploy" : "npm run build",
     "deploy" : "gh-pages -d build",
